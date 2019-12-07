@@ -1,0 +1,10 @@
+/*
+Below codes to be Executed in pyspark shell
+*/
+
+from pyspark.sql import SQLContext
+from pyspark.sql import HiveContext
+sqlcontext = HiveContext(sc)
+empl = sqlcontext.sql("select * from keerthyrajamani7887.employee")
+for recs in empl.collect():
+  print(recs)
