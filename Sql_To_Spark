@@ -1,0 +1,18 @@
+/*
+Below codes to be Executed in pyspark shell	
+*/
+
+pyspark --driver-class-path /usr/share/java/mysql-connector-java.jar
+
+from pyspark.sql import SQLContext
+sqlContext = SQLContext(sc)
+df=sqlContext.read.format("jdbc").options(
+url="jdbc:mysql://ipa.ddr.ess.ipa/retail_db",
+driver="com.mysql.jdbc.Driver",
+dbtable="employee",
+user="[user]",
+password="[password]"
+).load()
+
+for rec in df.collect():
+  print(rec)
