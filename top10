@@ -1,0 +1,17 @@
+#Find top ten Most viewed Movies(with names).
+ratings = sc.textFile("/user/keerthirajamani/ml-latest-small/ratings.csv")
+movies = sc.textFile("/user/keerthirajamani/ml-latest-small/movies.csv")
+ratingsMap = ratings.map(lambda x:(x.split(",")[1],int(1))) 
+#movieid,1
+ratingsRed = ratingsMap.reduceByKey(lambda x,y:x+y)
+#movieid,count_of_movieid
+moviesMap = movies.map(lambda x:(x.split(",")[0],x.split(",")[1]))
+#movieid,movie_name
+joins=ratingsRed.join(moviesMap)
+#movieid,(count_of_movieid,movie_name)
+mapjoin = joins.map(lambda x:(x[1][1],x[1][0]))
+#Movie_Name,Count_of_Movies
+demo_sort = mapjoin.sortBy(lambda pair:pair[1],ascending=False)
+#Movie_Name,Sorted_Count_of_Movies
+for i in demo_sort.take(10):
+  print(i)
